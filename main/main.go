@@ -5,7 +5,6 @@ import (
 	"edu_api_v2/models"
 	"fmt"
 	_ "github.com/buaazp/fasthttprouter"
-	_ "github.com/go-sql-driver/mysql"
 
 	_ "github.com/valyala/fasthttp"
 	"log"
@@ -28,5 +27,7 @@ func main() {
 				fmt.Printf("%#v\n", user)
 			}
 		}
+	} else {
+		fmt.Printf("%s", "出错啦")
 	}
 }
