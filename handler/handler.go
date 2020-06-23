@@ -25,7 +25,7 @@ func BadRequest(ctx *fasthttp.RequestCtx) {
 /**
 路由请求处理
 */
-func Do(middleWares ...MiddleWares) fasthttp.RequestHandler {
+func Do(next fasthttp.RequestHandler, middleWares ...MiddleWares) fasthttp.RequestHandler {
 	return fasthttp.RequestHandler(func(ctx *fasthttp.RequestCtx) {
 		if len(middleWares) > 0 {
 			for _, md := range middleWares {
