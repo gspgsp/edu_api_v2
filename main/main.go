@@ -16,7 +16,7 @@ func main() {
 		LogAllErrors:     true,
 	}
 
-	if err := server.ListenAndServe("localhost:80"); err != nil {
+	if err := server.ListenAndServe("127.0.0.1:80"); err != nil {
 		log.Fatalln(err)
 	}
 }
