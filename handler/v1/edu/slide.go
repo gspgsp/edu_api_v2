@@ -13,7 +13,7 @@ var (
 )
 
 func SlidesList(ctx *fasthttp.RequestCtx) {
-	rows, err := db.Queryx("select * from h_slides where status = 1")
+	rows, err := db.Queryx("select id, port, title, url, carousel, ifnull(sort, '0') as sort, ifnull(description, '') as description from h_slides where status = 1 limit 4")
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())
 		return
