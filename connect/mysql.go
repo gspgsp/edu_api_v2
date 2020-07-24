@@ -5,6 +5,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+	"time"
 )
 
 var Db *sqlx.DB
@@ -12,6 +13,7 @@ var Db *sqlx.DB
 func init() {
 	dataSourceName := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v", config.Config.Mysql.DbUsername, config.Config.Mysql.DbPassword, config.Config.Mysql.DbHost, config.Config.Mysql.DbPort, config.Config.Mysql.DbDatabase)
 	db, err := sqlx.Connect("mysql", dataSourceName)
+	db.SetConnMaxLifetime(300 * time.Second)
 
 	if err == nil && db != nil {
 		Db = db
