@@ -10,7 +10,7 @@ import (
 
 func PackageList(ctx *fasthttp.RequestCtx) {
 
-	rows, err := connect.Db.Queryx(`select att.id, att.title, att.subtitle, ifnull(learn_num, 0) + ifnull(buy_num, 0) as learn_num, avl.length  from h_edu_packages as att LEFT JOIN(
+	rows, err := connect.Db.Queryx(`select att.id, att.title, att.subtitle, att.cover_picture, ifnull(learn_num, 0) + ifnull(buy_num, 0) as learn_num, avl.length  from h_edu_packages as att LEFT JOIN(
 	select aa.package_id,sum(bb.length) as length
 		from h_edu_package_course as aa LEFT JOIN h_edu_courses bb on aa.course_id=bb.id
 		GROUP BY aa.package_id) as avl on att.id=avl.package_id`)
