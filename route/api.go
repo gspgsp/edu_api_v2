@@ -14,6 +14,7 @@ func Handler() fasthttp.RequestHandler {
 	router.MethodNotAllowed = handler.BadRequest
 	router.GET("/api/v1/slides", handler.Do(edu2.SlidesList, edu.CheckParam))
 	router.GET("/api/v1/packages", handler.Do(edu2.PackageList, edu.CheckParam))
+	router.GET("/api/v1/boutiques", handler.Do(edu2.BoutiqueList, edu.CheckParam))
 
 	return router.Handler
 }
