@@ -5,8 +5,7 @@ type Boutique struct {
 	Title           string   `db:"title"json:"title"`
 	Subtitle        *string  `db:"subtitle"json:"subtitle"`
 	DifficultyLevel int64    `db:"difficulty_level"json:"difficulty_level"`
-	LearnNum        int64    `db:"learn_num"json:"learn_num"`
-	BuyNum          int64    `db:"buy_num"json:"buy_num"`
+	LearnCount      int64    `db:"learn_count"json:"learn_count"`
 	Price           float64  `db:"price"json:"price"`
 	Discount        *float64 `db:"discount"json:"discount"`
 	DiscountEndAt   *string  `db:"discount_end_at"json:"discount_end_at"`
