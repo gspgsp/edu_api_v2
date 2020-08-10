@@ -27,6 +27,7 @@ func SlidesList(ctx *fasthttp.RequestCtx) {
 		err := rows.StructScan(&slide)
 		if err != nil {
 			log.Printf("数据结构化错误:%s", err.Error())
+			return
 		} else {
 			slides = append(slides, slide)
 		}

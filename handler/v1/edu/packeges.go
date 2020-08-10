@@ -31,6 +31,7 @@ func PackageList(ctx *fasthttp.RequestCtx) {
 		err := rows.StructScan(&pkg)
 		if err != nil {
 			log.Printf("数据结构化错误:%s", err.Error())
+			return
 		} else {
 			packages = append(packages, pkg)
 		}

@@ -30,6 +30,7 @@ func BoutiqueList(ctx *fasthttp.RequestCtx) {
 
 		if err != nil {
 			log.Printf("数据结构化错误:%s", err.Error())
+			return
 		} else {
 			boutiques = append(boutiques, boutique)
 		}
