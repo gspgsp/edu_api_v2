@@ -12,10 +12,11 @@ func Handler() fasthttp.RequestHandler {
 	router := fasthttprouter.New()
 	router.NotFound = handler.BadRequest
 	router.MethodNotAllowed = handler.BadRequest
-	router.GET("/api/v1/slides", handler.Do(edu2.SlidesList, edu.CheckParam))
-	router.GET("/api/v1/packages", handler.Do(edu2.PackageList, edu.CheckParam))
-	router.GET("/api/v1/boutiques", handler.Do(edu2.BoutiqueList, edu.CheckParam))
-	router.GET("/api/v1/frees", handler.Do(edu2.FreeList, edu.CheckParam))
+	router.GET("/api/v1/slides", handler.Do(edu2.SlidesList))
+	router.GET("/api/v1/packages", handler.Do(edu2.PackageList))
+	router.GET("/api/v1/boutiques", handler.Do(edu2.BoutiqueList))
+	router.GET("/api/v1/frees", handler.Do(edu2.FreeList))
+	router.GET("/api/v1/course-detail", handler.Do(edu2.GetCourseDetail, edu.CourseDetailCheckParam))
 
 	return router.Handler
 }
