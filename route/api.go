@@ -17,6 +17,7 @@ func Handler() fasthttp.RequestHandler {
 	router.GET("/api/v1/boutiques", handler.Do(edu2.BoutiqueList))
 	router.GET("/api/v1/frees", handler.Do(edu2.FreeList))
 	router.GET("/api/v1/course-detail", handler.Do(edu2.GetCourseDetail, edu.CourseDetailCheckParam))
+	router.GET("/api/v1/course-user", handler.Do(edu2.GetCourseUser, edu.CourseDetailCheckParam))
 
 	return router.Handler
 }

@@ -15,7 +15,7 @@ import (
 func GetCourseDetail(ctx *fasthttp.RequestCtx) {
 	var id = fmt.Sprintf("%s", ctx.QueryArgs().Peek("id"))
 
-	rows, err := connect.Db.Queryx("select id, uuid, type, title, subtitle, price, vip_price, discount, discount_end_at, ifnull(learn_num, 0) + ifnull(buy_num, 0) as learn_count, length, rating, practical_rating, popular_rating, logic_rating, goals, audiences, summary from h_edu_courses where id = "+id)
+	rows, err := connect.Db.Queryx("select id, uuid, type, title, subtitle, price, vip_price, discount, discount_end_at, ifnull(learn_num, 0) + ifnull(buy_num, 0) as learn_count, length, rating, practical_rating, popular_rating, logic_rating, goals, audiences, summary from h_edu_courses where id = " + id)
 
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())
@@ -41,4 +41,86 @@ func GetCourseDetail(ctx *fasthttp.RequestCtx) {
 	}
 
 	response.New(ctx).SetData(course_details).JsonReturn()
+}
+
+/**
+获取课程用户
+ */
+func GetCourseUser(ctx *fasthttp.RequestCtx) {
+	var id = fmt.Sprintf("%s", ctx.QueryArgs().Peek("id"))
+
+	var user_ids []string
+	//随机获取一个讲师信息
+	rows, err := connect.Db.Queryx("select user_id from h_edu_course_user where course_id = " + id)
+	if err != nil {
+		log.Printf("查询错误:%s", err.Error())
+		return
+	}
+
+	if rows == nil {
+		log.Print("数据结果为空")
+		return
+	}
+	var user_id string
+	for rows.Next() {
+		err := rows.Scan(&user_id)
+		if err != nil {
+			log.Printf("数据结构化错误:%s", err.Error())
+			return
+		}
+
+		user_ids = append(user_ids, user_id)
+	}
+
+	if len(user_ids) == 0 {
+		log.Print("未找到相关讲师信息")
+		return
+	}
+
+	courseUser := make(chan *models.User, len(user_ids))
+
+	for _, uId := range user_ids {
+		go user_info(uId, courseUser)
+	}
+
+	var users []*models.User
+	for i := 0; i < len(user_ids); i++ {
+		v := <-courseUser
+		users = append(users, v)
+	}
+
+	response.New(ctx).SetData(users).JsonReturn()
+}
+
+/**
+获取用户信息
+ */
+func user_info(uId string, courseUser chan *models.User) {
+	row := connect.Db.QueryRow("select id, avatar, nickname, title, about from h_users where id = " + uId)
+	user := &models.User{}
+	var (
+		id       int64
+		avatar   string
+		nickname string
+		title    int64
+		about    string
+	)
+
+	err := row.Scan(&id, &avatar, &nickname, &title, &about)
+	if err != nil {
+		log.Printf("用户数据结构化错误:%s", err.Error())
+		return
+	}
+
+	user.Id = &id
+	user.Avatar = &avatar
+	user.Nickname = &nickname
+	user.Title = &title
+	user.About = &about
+
+	defer func() {
+		courseUser <- user
+	}()
+
+	return
 }
