@@ -7,6 +7,7 @@ import (
 	"edu_api_v2/models"
 	"edu_api_v2/response"
 	"fmt"
+	"strconv"
 )
 
 /**
@@ -47,7 +48,10 @@ func GetCourseDetail(ctx *fasthttp.RequestCtx) {
 获取课程用户
  */
 func GetCourseUser(ctx *fasthttp.RequestCtx) {
-	var id = fmt.Sprintf("%s", ctx.QueryArgs().Peek("id"))
+	var (
+		id = fmt.Sprintf("%s", ctx.QueryArgs().Peek("id"))
+	)
+	limit, _ := strconv.Atoi(fmt.Sprintf("%s", ctx.QueryArgs().Peek("limit")))
 
 	var user_ids []string
 	//随机获取一个讲师信息
@@ -87,6 +91,16 @@ func GetCourseUser(ctx *fasthttp.RequestCtx) {
 	for i := 0; i < len(user_ids); i++ {
 		v := <-courseUser
 		users = append(users, v)
+	}
+
+	if len(users) > 0 && limit == 1 {
+		users = users[0:1]
+	} else {
+		if cap(users) <= limit {
+			users = users[0:cap(users)]
+		} else {
+			users = users[0:limit]
+		}
 	}
 
 	response.New(ctx).SetData(users).JsonReturn()

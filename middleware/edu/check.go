@@ -25,3 +25,11 @@ func CourseDetailCheckParam(ctx *fasthttp.RequestCtx) error {
 
 	return errors.New("ID参数必传")
 }
+
+func CourseUserCheckParam(ctx *fasthttp.RequestCtx) error {
+	if !ctx.QueryArgs().Has("limit") {
+		ctx.QueryArgs().Set("limit", "1")
+	}
+
+	return nil
+}
