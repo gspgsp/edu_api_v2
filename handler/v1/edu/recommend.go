@@ -76,8 +76,13 @@ func GetRecommend(ctx *fasthttp.RequestCtx) {
 	}else {
 		//推荐功能
 
+
 	}
 
 	log.Printf("id is:%v", tags)
 	response.New(ctx).SetData(recommends).JsonReturn()
+}
+
+func recommends()  {
+
 }
