@@ -10,9 +10,23 @@ import (
 )
 
 func GetCourseReview(ctx *fasthttp.RequestCtx) {
-	var id = fmt.Sprintf("%s", ctx.QueryArgs().Peek("id"))
+	var (
+		id        = fmt.Sprintf("%s", ctx.QueryArgs().Peek("id"))
+		page      = "1"
+		page_size = "20"
+	)
 
-	rows, err := connect.Db.Queryx("select c.anonymous, c.rating, c.review, c.reviewed_at, c.reply, u.nickname from h_user_course as c left join h_users as u on c.user_id = u.id where course_id = " + id + " and c.status = 1 and c.reviewed = 1")
+	if res := ctx.QueryArgs().Has("page"); res == true {
+		page = fmt.Sprintf("%s", ctx.QueryArgs().Peek("page"))
+	}
+
+	if res := ctx.QueryArgs().Has("page_size"); res == true {
+		page_size = fmt.Sprintf("%s", ctx.QueryArgs().Peek("page_size"))
+	}
+
+
+
+	rows, err := connect.Db.Queryx("select c.anonymous, c.rating, c.review, c.reviewed_at, c.reply, u.nickname from h_user_course as c left join h_users as u on c.user_id = u.id where course_id = " + id + " and c.status = 1 and c.reviewed = 1 limit "+page+","+page_size)
 
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())
