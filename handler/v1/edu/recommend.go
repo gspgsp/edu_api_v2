@@ -108,8 +108,7 @@ GetChannelData:
 		}
 	}
 
-
-
+return recommends, nil
 }
 
 func tagCourses(channel chan models2.Recommend, isEnd chan bool, tid, id string) {
