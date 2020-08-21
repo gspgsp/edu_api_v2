@@ -7,6 +7,7 @@ import (
 	"edu_api_v2/connect"
 	"edu_api_v2/models"
 	"edu_api_v2/response"
+	models2 "edu_api/models"
 )
 
 type Tag struct {
@@ -73,9 +74,8 @@ func GetRecommend(ctx *fasthttp.RequestCtx) {
 
 			recommends = append(recommends, recommend)
 		}
-	}else {
+	} else {
 		//推荐功能
-
 
 	}
 
@@ -83,6 +83,61 @@ func GetRecommend(ctx *fasthttp.RequestCtx) {
 	response.New(ctx).SetData(recommends).JsonReturn()
 }
 
-func recommends()  {
+func recommends(tags []Tag, id string) (recommends []models2.Recommend, err error) {
 
+	channel := make(chan models2.Recommend, len(tags))
+	isEnd := make(chan bool)
+	endNumber := 0
+
+	for _, val := range tags {
+		go tagCourses(channel, isEnd, val.Id, id)
+	}
+
+GetChannelData:
+	for  {
+		select {
+			case v, ok := <- channel:
+				if ok {
+					recommends = append(recommends, v)
+				}else {
+					log.Printf("当前channel")
+				}
+		case <-isEnd:
+			endNumber++
+			break GetChannelData
+		}
+	}
+
+
+
+}
+
+func tagCourses(channel chan models2.Recommend, isEnd chan bool, tid, id string) {
+
+	rows, err := connect.Db.Queryx("select c.id, c.type, c.title, c.subtitle, c.difficulty_level, c.cover_picture from h_edu_courses as c left join h_taggables t on c.id = t.taggable_id where t.tag_id = " + tid + " and c.type in ('free', 'boutique') and c.status = 'published' and c.is_recommended = 1 and c.id != " + id +" group by c.id")
+
+	if err != nil {
+		log.Printf("查询错误:%s", err.Error())
+		return
+	}
+
+	if rows == nil {
+		log.Print("数据结果为空")
+		return
+	}
+
+	var recommend models2.Recommend
+	for rows.Next() {
+		err := rows.StructScan(&recommend)
+		if err != nil {
+			log.Printf("数据结构化错误:%s", err.Error())
+			return
+		}
+
+		channel <- recommend
+	}
+
+	defer func() {
+		isEnd <- true
+	}()
 }
