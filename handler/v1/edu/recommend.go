@@ -58,7 +58,6 @@ func GetRecommend(ctx *fasthttp.RequestCtx) {
 			recommends = recommendData
 		}
 	} else {
-		//推荐功能
 		if recommendData, err := recommendData(tags, id); err == nil {
 			recommends = recommendData
 		}
@@ -67,6 +66,9 @@ func GetRecommend(ctx *fasthttp.RequestCtx) {
 	response.New(ctx).SetData(recommends).JsonReturn()
 }
 
+/**
+默认推荐数据
+ */
 func defaultData(id, limit string) ([]models.Course, error) {
 	var (
 		recommend  models.Course
