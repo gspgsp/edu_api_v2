@@ -16,7 +16,7 @@ import (
 func GetCourseDetail(ctx *fasthttp.RequestCtx) {
 	var id = fmt.Sprintf("%s", ctx.QueryArgs().Peek("id"))
 
-	rows, err := connect.Db.Queryx("select id, uuid, type, title, subtitle, price, vip_price, discount, discount_end_at, ifnull(learn_num, 0) + ifnull(buy_num, 0) as learn_count, length, rating, practical_rating, popular_rating, logic_rating, goals, audiences, summary from h_edu_courses where id = " + id)
+	rows, err := connect.Db.Queryx("select id, uuid, type, title, subtitle, price, vip_price, discount, discount_end_at, ifnull(learn_num, 0) + ifnull(buy_num, 0) as learn_count, length, rating, practical_rating, popular_rating, logic_rating, goals, audiences, summary, difficulty_level from h_edu_courses where id = " + id)
 
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())
