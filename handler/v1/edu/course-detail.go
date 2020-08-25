@@ -24,7 +24,6 @@ func GetCourseDetail(ctx *fasthttp.RequestCtx) {
 	}
 
 	courseDetail := models.CourseDetail{}
-	var course_details []models.CourseDetail
 
 	if rows == nil {
 		log.Print("数据结果为空")
@@ -37,11 +36,9 @@ func GetCourseDetail(ctx *fasthttp.RequestCtx) {
 			log.Printf("数据结构化错误:%s", err.Error())
 			return
 		}
-
-		course_details = append(course_details, courseDetail)
 	}
 
-	response.New(ctx).SetData(course_details).JsonReturn()
+	response.New(ctx).SetData(courseDetail).JsonReturn()
 }
 
 /**
