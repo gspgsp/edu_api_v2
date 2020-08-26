@@ -8,6 +8,7 @@ import (
 	"edu_api_v2/response"
 	"fmt"
 	"strconv"
+	"edu_api_v2/message"
 )
 
 /**
@@ -20,6 +21,7 @@ func GetCourseDetail(ctx *fasthttp.RequestCtx) {
 
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())
+		response.New(ctx).SetMessage(message.EmptyData).JsonReturn()
 		return
 	}
 
@@ -27,6 +29,7 @@ func GetCourseDetail(ctx *fasthttp.RequestCtx) {
 
 	if rows == nil {
 		log.Print("数据结果为空")
+		response.New(ctx).SetMessage(message.EmptyData).JsonReturn()
 		return
 	}
 
@@ -34,6 +37,7 @@ func GetCourseDetail(ctx *fasthttp.RequestCtx) {
 		err := rows.StructScan(&courseDetail)
 		if err != nil {
 			log.Printf("数据结构化错误:%s", err.Error())
+			response.New(ctx).SetMessage(message.EmptyData).JsonReturn()
 			return
 		}
 	}
@@ -55,11 +59,13 @@ func GetCourseUser(ctx *fasthttp.RequestCtx) {
 	rows, err := connect.Db.Queryx("select user_id from h_edu_course_user where course_id = " + id)
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())
+		response.New(ctx).SetMessage(message.EmptyData).JsonReturn()
 		return
 	}
 
 	if rows == nil {
 		log.Print("数据结果为空")
+		response.New(ctx).SetMessage(message.EmptyData).JsonReturn()
 		return
 	}
 	var user_id string
@@ -67,6 +73,7 @@ func GetCourseUser(ctx *fasthttp.RequestCtx) {
 		err := rows.Scan(&user_id)
 		if err != nil {
 			log.Printf("数据结构化错误:%s", err.Error())
+			response.New(ctx).SetMessage(message.EmptyData).JsonReturn()
 			return
 		}
 
@@ -75,6 +82,7 @@ func GetCourseUser(ctx *fasthttp.RequestCtx) {
 
 	if len(user_ids) == 0 {
 		log.Print("未找到相关讲师信息")
+		response.New(ctx).SetMessage(message.EmptyData).JsonReturn()
 		return
 	}
 

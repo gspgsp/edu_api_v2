@@ -4,6 +4,7 @@ import (
 	"edu_api_v2/message"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/valyala/fasthttp"
+	"log"
 )
 
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
@@ -12,7 +13,7 @@ var json = jsoniter.ConfigCompatibleWithStandardLibrary
 初始化响应对象
 */
 func New(ctx *fasthttp.RequestCtx) *response {
-	return &response{message.Code(message.Success), "success", []interface{}{}, ctx}
+	return &response{message.Code(message.Success), "success!", []interface{}{}, ctx}
 }
 
 func (r *response) SetMessage(err error) *response {
@@ -30,6 +31,7 @@ func (r *response) SetData(data interface{}) *response {
 json返回
 */
 func (r *response) JsonReturn() {
+	log.Printf("r is:%v", r)
 	r.Ctx.Response.Reset()
 	r.Ctx.Response.ResetBody()
 	r.Ctx.Response.Header.SetStatusCode(fasthttp.StatusOK)
