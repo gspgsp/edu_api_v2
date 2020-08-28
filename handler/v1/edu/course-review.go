@@ -7,6 +7,7 @@ import (
 	"log"
 	"edu_api_v2/models"
 	"edu_api_v2/response"
+	"edu_api_v2/message"
 )
 
 func GetCourseReview(ctx *fasthttp.RequestCtx) {
@@ -30,11 +31,13 @@ func GetCourseReview(ctx *fasthttp.RequestCtx) {
 
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())
+		response.New(ctx).SetMessage(message.EmptyData).JsonReturn()
 		return
 	}
 
 	if rows == nil {
 		log.Print("数据结果为空")
+		response.New(ctx).SetMessage(message.EmptyData).JsonReturn()
 		return
 	}
 
@@ -47,6 +50,7 @@ func GetCourseReview(ctx *fasthttp.RequestCtx) {
 		err := rows.StructScan(&review)
 		if err != nil {
 			log.Printf("数据结构化错误:%s", err.Error())
+			response.New(ctx).SetMessage(message.EmptyData).JsonReturn()
 			return
 		}
 
