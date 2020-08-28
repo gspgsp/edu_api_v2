@@ -40,7 +40,7 @@ func GetRecommend(ctx *fasthttp.RequestCtx) {
 	var (
 		tagId      Tag
 		tags       []Tag
-		recommends []models.Course
+		recommends []models.Boutique
 	)
 
 	for rows.Next() {
@@ -69,13 +69,13 @@ func GetRecommend(ctx *fasthttp.RequestCtx) {
 /**
 默认推荐数据
  */
-func defaultData(id, limit string) ([]models.Course, error) {
+func defaultData(id, limit string) ([]models.Boutique, error) {
 	var (
-		recommend  models.Course
-		recommends []models.Course
+		recommend  models.Boutique
+		recommends []models.Boutique
 	)
 
-	rows, err := connect.Db.Queryx("select id, type, title, subtitle, difficulty_level, cover_picture from h_edu_courses where type in ('free', 'boutique') and status = 'published' and is_recommended = 1 and id != " + id + " limit " + limit)
+	rows, err := connect.Db.Queryx("select id, type, title, subtitle, difficulty_level, cover_picture, price, discount, discount_end_at, vip_level, vip_price, ifnull(learn_num, 0) + ifnull(buy_num, 0) as learn_count from h_edu_courses where type in ('free', 'boutique') and status = 'published' and is_recommended = 1 and id != " + id + " limit " + limit)
 
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())
@@ -103,9 +103,9 @@ func defaultData(id, limit string) ([]models.Course, error) {
 /**
 获取推荐数据
  */
-func recommendData(tags []Tag, id string) (recommends []models.Course, err error) {
+func recommendData(tags []Tag, id string) (recommends []models.Boutique, err error) {
 
-	channel := make(chan models.Course, len(tags))
+	channel := make(chan models.Boutique, len(tags))
 	isEnd := make(chan bool)
 	times := 0
 
@@ -156,8 +156,8 @@ GetChannelData:
 /**
 推荐课程信息
  */
-func tagCourses(channel chan models.Course, isEnd chan bool, tid, id string) {
-	rows, err := connect.Db.Queryx("select c.id, c.type, c.title, c.subtitle, c.difficulty_level, c.cover_picture from h_edu_courses as c left join h_taggables t on c.id = t.taggable_id where t.tag_id = " + tid + " and c.type in ('free', 'boutique') and c.status = 'published' and c.is_recommended = 0 and c.id != " + id + " group by c.id")
+func tagCourses(channel chan models.Boutique, isEnd chan bool, tid, id string) {
+	rows, err := connect.Db.Queryx("select c.id, c.type, c.title, c.subtitle, c.difficulty_level, c.cover_picture, c.price, c.discount, c.discount_end_at, c.vip_level, c.vip_price, ifnull(c.learn_num, 0) + ifnull(c.buy_num, 0) as learn_count from h_edu_courses as c left join h_taggables t on c.id = t.taggable_id where t.tag_id = " + tid + " and c.type in ('free', 'boutique') and c.status = 'published' and c.is_recommended = 0 and c.id != " + id + " group by c.id")
 
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())
@@ -169,7 +169,7 @@ func tagCourses(channel chan models.Course, isEnd chan bool, tid, id string) {
 		return
 	}
 
-	var recommend models.Course
+	var recommend models.Boutique
 	for rows.Next() {
 		err := rows.StructScan(&recommend)
 		if err != nil {
