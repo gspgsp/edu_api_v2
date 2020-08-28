@@ -27,7 +27,7 @@ func GetCourseReview(ctx *fasthttp.RequestCtx) {
 
 
 
-	rows, err := connect.Db.Queryx("select c.anonymous, c.rating, c.review, c.reviewed_at, c.reply, u.nickname from h_user_course as c left join h_users as u on c.user_id = u.id where course_id = " + id + " and c.status = 1 and c.reviewed = 1 limit "+page+","+page_size)
+	rows, err := connect.Db.Queryx("select c.anonymous, c.rating, c.review, c.reviewed_at, c.reply, u.nickname, u.avatar from h_user_course as c left join h_users as u on c.user_id = u.id where course_id = " + id + " and c.status = 1 and c.reviewed = 1 limit "+page+","+page_size)
 
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())

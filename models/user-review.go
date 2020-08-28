@@ -7,4 +7,5 @@ type UserReview struct {
 	ReviewedAt *string `db:"reviewed_at"json:"reviewed_at"`
 	Reply      *string `db:"reply"json:"reply"`
 	Nickname   *string `db:"nickname"json:"nickname"`
+	Avatar     *string `db:"avatar"json:"avatar"`
 }
