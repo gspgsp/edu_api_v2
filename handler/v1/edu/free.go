@@ -10,7 +10,7 @@ import (
 
 func FreeList(ctx *fasthttp.RequestCtx) {
 
-	rows, err := connect.Db.Queryx("select id, type, title, subtitle, difficulty_level, (ifnull(learn_num, 0) + ifnull(buy_num, 0)) as learn_count, cover_picture from h_edu_courses where status = 'published' order by updated_at desc, sort desc limit 4")
+	rows, err := connect.Db.Queryx("select id, type, title, subtitle, difficulty_level, (ifnull(learn_num, 0) + ifnull(buy_num, 0)) as learn_count, cover_picture from h_edu_courses where status = 'published' and type = 'free' order by updated_at desc, sort desc limit 4")
 	if err != nil {
 		log.Printf("查询错误:%s", err.Error())
 		return
