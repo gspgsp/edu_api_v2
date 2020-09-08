@@ -3,7 +3,6 @@ package edu
 import (
 	"github.com/valyala/fasthttp"
 	"fmt"
-	_ "github.com/iGoogle-ink/gopay"
 	"github.com/iGoogle-ink/gopay"
 )
 
