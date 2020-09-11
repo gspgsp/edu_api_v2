@@ -18,7 +18,7 @@ func GenerateOrder(ctx *fasthttp.RequestCtx) {
 	notify_url := "http://api.gsplovedss.xyz/api/v1/notify"
 	return_url := "http://api.gsplovedss.xyz/api/v1/return"
 
-	var client, err = alipay.New(app_id, private_key, false)
+	client, err := alipay.New(app_id, private_key, false)
 	client.LoadAliPayPublicKey(ali_publice_key)
 
 	if err != nil {
