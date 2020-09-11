@@ -6,5 +6,5 @@ import (
 )
 
 func NotifyUrl(ctx *fasthttp.RequestCtx) {
-	log.Printf("the rquest body is:%s", ctx.UserAgent())
+	log.Printf("the notify rquest body is:%s", ctx.UserAgent())
 }
