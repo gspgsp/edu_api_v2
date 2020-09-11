@@ -5,7 +5,6 @@ import (
 	"github.com/smartwalle/alipay"
 	"log"
 	"edu_api_v2/response"
-	"net/url"
 )
 
 /**
