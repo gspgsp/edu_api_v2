@@ -7,4 +7,5 @@ import (
 
 func NotifyUrl(ctx *fasthttp.RequestCtx) {
 	log.Printf("the notify rquest body is:%s", string(ctx.PostBody()))
+	log.Printf("the notify rquest body is:%s", string(ctx.PostArgs().Peek("trade_no")))
 }
