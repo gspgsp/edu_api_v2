@@ -31,8 +31,8 @@ func GenerateOrder(ctx *fasthttp.RequestCtx) {
 	p.NotifyURL = notify_url
 	p.ReturnURL = return_url
 	p.Subject = "go手机网站测试支付"
-	p.OutTradeNo = "1599790385"
-	p.TotalAmount = "86"
+	p.OutTradeNo = "1599801617"
+	p.TotalAmount = "110"
 	p.ProductCode = "QUICK_WAP_WAY"
 
 	url, err := client.TradeWapPay(p)
