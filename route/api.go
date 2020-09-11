@@ -21,7 +21,7 @@ func Handler() fasthttp.RequestHandler {
 	router.GET("/api/v1/course-review", handler.Do(edu2.GetCourseReview, edu.CourseDetailCheckParam))
 	router.GET("/api/v1/recommend", handler.Do(edu2.GetRecommend, edu.CourseDetailCheckParam))
 	router.GET("/api/v1/order", handler.Do(edu2.GenerateOrder))
-	router.GET("/api/v1/notify", handler.Do(edu2.NotifyUrl))
+	router.POST("/api/v1/notify", handler.Do(edu2.NotifyUrl)) //异步通知为post请求
 	router.GET("/api/v1/return", handler.Do(edu2.ReturnUrl))
 
 	return router.Handler
