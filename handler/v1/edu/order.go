@@ -6,6 +6,8 @@ import (
 	"edu_api_v2/response"
 	"github.com/smartwalle/alipay"
 	"log"
+	"time"
+	"strconv"
 )
 
 /**
@@ -31,7 +33,7 @@ func GenerateOrder(ctx *fasthttp.RequestCtx) {
 	p.NotifyURL = notify_url
 	p.ReturnURL = return_url
 	p.Subject = "go手机网站测试支付"
-	p.OutTradeNo = "1599801617"
+	p.OutTradeNo = strconv.FormatInt(time.Now().Unix(), 10)
 	p.TotalAmount = "110"
 	p.ProductCode = "QUICK_WAP_WAY"
 
