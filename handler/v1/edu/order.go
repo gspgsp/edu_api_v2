@@ -2,9 +2,10 @@ package edu
 
 import (
 	"github.com/valyala/fasthttp"
+	_ "github.com/smartwalle/alipay"
+	"edu_api_v2/response"
 	"github.com/smartwalle/alipay"
 	"log"
-	"edu_api_v2/response"
 )
 
 /**
