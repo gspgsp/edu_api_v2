@@ -12,3 +12,10 @@ redis:
   redis_database: 3
   redis_username: root
   redis_password: root
+alipay:
+    app_id: 1111111
+    ali_publice_key: 2222222
+    private_key: 33333
+    notify_url: 444444
+    return_url: 555555
+    is_production: false

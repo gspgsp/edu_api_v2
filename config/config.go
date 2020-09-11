@@ -30,8 +30,9 @@ func parseYaml() *configuration {
 }
 
 type configuration struct {
-	Mysql mysql `json:"mysql",yaml:"mysql"`
-	Redis redis `json:"redis",yaml:"redis"`
+	Mysql  mysql  `json:"mysql",yaml:"mysql"`
+	Redis  redis  `json:"redis",yaml:"redis"`
+	Alipay alipay `json:"alipay",yaml:"alipay"`
 }
 
 func (conf *configuration) yaml(dir string) (*configuration, error) {
@@ -71,4 +72,13 @@ type redis struct {
 	RedisDatabase int    `yaml:"redis_database",json:"redis_database"`
 	RedisUsername string `yaml:"redis_username",json:"redis_username"`
 	RedisPassword string `yaml:"redis_password",json:"redis_password"`
+}
+
+type alipay struct {
+	AppId         string `yaml:"app_id",json:"app_id"`
+	AliPubliceKey string `yaml:"ali_publice_key",json:"ali_publice_key"`
+	PrivateKey    string `yaml:"private_key",json:"private_key"`
+	NotifyUrl     string `yaml:"notify_url",json:"notify_url"`
+	ReturnUrl     string `yaml:"return_url",json:"return_url"`
+	IsProduction  bool   `yaml:"is_production",json:"is_production"`
 }
